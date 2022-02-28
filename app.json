@@ -4,7 +4,7 @@
     "slug": "Project",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon/Compass.png",
+    "icon": "./assets/icon/CompassOrange.png",
     "splash": {
       "image": "./assets/splashart.png",
       "resizeMode": "contain",
