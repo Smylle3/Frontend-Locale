@@ -12,6 +12,32 @@ import styles from "./styles";
 
 export default function LoginPage({ navigation }) {
   const [alert, setAlert] = useState("none");
+  const [user, setUser] = useState(null);
+  const [password, setPassword] = useState(null);
+  const [login, setLogin] = useState(null);
+
+  async function sendForm() {
+    let response = await fetch("http://192.168.100.17:3000/login", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: user,
+        password: password,
+      }),
+    });
+    let jsonReturn = await response.json();
+    if(jsonReturn === "falied"){
+      setAlert("flex");
+      setTimeout(() => {
+        setAlert("none")
+      }, 3000);
+    } else {
+      navigation.navigate("Profile");
+    }
+  }
 
   return (
     <KeyboardAvoidingView
@@ -32,23 +58,37 @@ export default function LoginPage({ navigation }) {
       </View>
 
       <View style={styles.inputView}>
-        <TextInput placeholder="E-mail" style={styles.input} />
+        <TextInput
+          placeholder="Usuário"
+          style={styles.input}
+          onChangeText={(text) => {
+            setUser(text);
+          }}
+        />
         <TextInput
           placeholder="Senha"
           secureTextEntry={true}
           style={styles.input}
+          onChangeText={(text) => {
+            setPassword(text);
+          }}
         />
 
         <TouchableOpacity
           style={styles.button}
           onPress={() => {
-            setAlert("flex");
+            sendForm();
           }}
         >
           <Text>Entrar</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.buttonR} onPress={()=>{navigation.navigate("Home")}}>
+        <TouchableOpacity
+          style={styles.buttonR}
+          onPress={() => {
+            navigation.navigate("Home");
+          }}
+        >
           <Text>Voltar para Home</Text>
         </TouchableOpacity>
       </View>

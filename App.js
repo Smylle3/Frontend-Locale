@@ -1,7 +1,7 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { HomeScreen, LoginPage, Rastreio } from "./views/bridge";
+import { HomeScreen, LoginPage, Rastreio, AreaRestrita } from "./views/bridge";
 
 const Stack = createNativeStackNavigator();
 
@@ -55,7 +55,21 @@ export default function App() {
             headerTintColor: "#fff",
           }}
         />
-        {/*<Stack.Screen name="Login" component={AreaRestrita}/>*/}
+        <Stack.Screen
+          name="Profile"
+          component={AreaRestrita}
+          options={{
+            title: "RASTREAR",
+            headerTitleAlign: "center",
+            headerStyle: {
+              backgroundColor: "#ffab40",
+            },
+            headerTitleStyle: {
+              fontWeight: "bold",
+            },
+            headerTintColor: "#fff",
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
