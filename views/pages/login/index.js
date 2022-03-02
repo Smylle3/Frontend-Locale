@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as LocalAuthentication from "expo-local-authentication";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -14,7 +16,46 @@ export default function LoginPage({ navigation }) {
   const [alert, setAlert] = useState("none");
   const [user, setUser] = useState(null);
   const [password, setPassword] = useState(null);
-  const [login, setLogin] = useState(null);
+  const [login, setLogin] = useState(false);
+
+  useEffect(() => {
+    verLogin();
+  }, []);
+
+  async function verLogin() {
+    let response = await AsyncStorage.getItem("userData");
+    let jsonLogin = await JSON.parse(response);
+    if (jsonLogin !== null) {
+      setUser(jsonLogin.name);
+      setPassword(jsonLogin.password);
+      setLogin(true);
+    }
+    else {
+    }
+  }
+  
+  useEffect(() => {
+    console.log(login);
+    if (login === true) {
+      biometricLogin();
+    }
+  }, [login]);
+
+  async function biometricLogin() {
+    let compatible = await LocalAuthentication.hasHardwareAsync();
+    if(compatible){
+      let biometricRecords = await LocalAuthentication.isEnrolledAsync();
+      if(!biometricRecords){
+        alert("Biometria não cadastrada!");
+      } else {
+        let resultBio = await LocalAuthentication.authenticateAsync();
+        if(resultBio.success){
+          sendForm();
+        }else {
+        }
+      }
+    }
+  }
 
   async function sendForm() {
     let response = await fetch("http://192.168.100.17:3000/login", {
@@ -29,12 +70,18 @@ export default function LoginPage({ navigation }) {
       }),
     });
     let jsonReturn = await response.json();
-    if(jsonReturn === "falied"){
+
+    if (jsonReturn === "falied") {
       setAlert("flex");
       setTimeout(() => {
-        setAlert("none")
+        setAlert("none");
       }, 3000);
+      await AsyncStorage.clear();
     } else {
+      let userData = await AsyncStorage.setItem(
+        "userData",
+        JSON.stringify(jsonReturn)
+      );
       navigation.navigate("Profile");
     }
   }
