@@ -8,12 +8,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  areaTab:{
-    paddingBottom: 2,
-    backgroundColor: "#ffab40",
-    fontSize: 2,
-    fontWeight: "bold",
-  },
 });
 
 export default styles;
