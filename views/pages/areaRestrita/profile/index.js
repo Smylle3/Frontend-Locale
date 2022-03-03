@@ -122,6 +122,7 @@ export default function Profile({ navigation }) {
       </Modal>
 
       <NavBar title="Perfil" navigation={navigation} />
+      <View style={styles.imgTitle}></View>
       <Text style={styles.titleName}>{user}</Text>
       {/*BOX PARA ALTERAR USER*/}
       <View style={styles.changePassForm}>
@@ -138,7 +139,7 @@ export default function Profile({ navigation }) {
           onPress={() => changeUserName()}
           style={styles.buttomPass}
         >
-          <Text style={styles.buttomPassTxt}>Alterar senha</Text>
+          <Text style={styles.buttomPassTxt}>Alterar user</Text>
         </TouchableOpacity>
       </View>
 

@@ -42,6 +42,15 @@ const styles = StyleSheet.create({
     backgroundColor: "#df487f",
     color: "#f9c8d9",
   },
+  imgTitle: {
+    backgroundColor: "#fff",
+    
+    margin: 15,
+    width: 150,
+    height: 150,
+
+    borderRadius: 75,
+  },
   inputsView: {
     width: "100%",
     alignItems: "center",
