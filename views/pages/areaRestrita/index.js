@@ -3,7 +3,7 @@ import { createMaterialBottomTabNavigator } from "@react-navigation/material-bot
 import React, { useEffect, useState } from "react";
 import { View, Text, Button } from "react-native";
 
-import Icon from "react-native-vector-icons/FontAwesome5";
+import Icon from "react-native-vector-icons/Ionicons";
 import { Profile, Edicao, Cadastro } from "../../bridge.js";
 import styles from "./styles.js";
 
@@ -26,21 +26,21 @@ export default function AreaRestrita({ navigation }) {
         name="Perfil"
         component={Profile}
         options={{
-          tabBarIcon: () => <Icon name="users" size={19} color="#b2772c" />,
+          tabBarIcon: () => <Icon name="person" size={19} color="#b2772c" />,
         }}
       />
       <Tab.Screen
         name="Editar"
         component={Edicao}
         options={{
-          tabBarIcon: () => <Icon name="pen" size={20} color="#b2772c" />,
+          tabBarIcon: () => <Icon name="create" size={20} color="#b2772c" />,
         }}
       />
       <Tab.Screen
-        name="Cadastro"
+        name="Cadastrar"
         component={Cadastro}
         options={{
-          tabBarIcon: () => <Icon name="plus" size={20} color="#b2772c" />,
+          tabBarIcon: () => <Icon name="add-circle" size={20} color="#b2772c" />,
         }}
       />
     </Tab.Navigator>

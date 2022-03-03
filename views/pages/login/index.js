@@ -10,6 +10,8 @@ import {
   TextInput,
   Platform,
 } from "react-native";
+
+import config from "../../../app.json"
 import styles from "./styles";
 
 export default function LoginPage({ navigation }) {
@@ -58,7 +60,7 @@ export default function LoginPage({ navigation }) {
   }
 
   async function sendForm() {
-    let response = await fetch("http://192.168.100.17:3000/login", {
+    let response = await fetch(`${config.urlRoot}login`, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -75,7 +77,7 @@ export default function LoginPage({ navigation }) {
       setAlert("flex");
       setTimeout(() => {
         setAlert("none");
-      }, 3000);
+      }, 5000);
       await AsyncStorage.clear();
     } else {
       let userData = await AsyncStorage.setItem(

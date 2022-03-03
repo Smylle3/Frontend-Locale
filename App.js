@@ -62,6 +62,7 @@ export default function App() {
           options={{
             title: "RASTREAR",
             headerTitleAlign: "center",
+            headerShown: false,
             headerStyle: {
               backgroundColor: "#ffab40",
             },

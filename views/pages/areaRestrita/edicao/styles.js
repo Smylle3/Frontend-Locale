@@ -8,6 +8,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  top: {
+    justifyContent:"flex-start",
+  },
 });
 
 export default styles;

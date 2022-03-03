@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { View, Text } from "react-native";
 import styles from "./styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import NavBar from "../../../components/navbar";
 
-export default function Edicao() {
+export default function Edicao({ navigation }) {
   const [objCode, setObjCode] = useState("QK249414737BR");
 
   useEffect(() => {
@@ -23,7 +24,7 @@ export default function Edicao() {
         }
       );
       let jsonReturn = await response.json();
-      let objeto = jsonReturn.objetos
+      let objeto = jsonReturn.objetos;
       console.log(objeto);
       let response2 = await AsyncStorage.getItem("userData");
       let jsonUser = JSON.parse(response2);
@@ -46,7 +47,8 @@ export default function Edicao() {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, styles.top]}>
+      <NavBar title="Editar encomenda" navigation={navigation} />
       <Text>Edicao Page</Text>
     </View>
   );
