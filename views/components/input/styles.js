@@ -17,12 +17,12 @@ const styles = StyleSheet.create({
 
     height: 40,
     width: "90%",
-    
+
     margin: 2,
     paddingLeft: 10,
     paddingRight: 10,
   },
-  inputStyle: {
+  inputStyleTxt: {
     textAlign: "left",
 
     fontSize: 16,
@@ -35,6 +35,12 @@ const styles = StyleSheet.create({
     width: "90%",
     margin: 2,
     paddingLeft: 10,
+  },
+  inputStylePass: {
+    fontSize: 16,
+
+    height: 40,
+    width: "85%",
   },
 });
 

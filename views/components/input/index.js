@@ -11,7 +11,7 @@ export default function InputMy(props) {
     return (
       <View style={styles.viewInputStyle}>
         <TextInput
-          style={{ width: "85%" }}
+          style={styles.inputStylePass}
           placeholder={props.title}
           value={props.nameUser}
           onChangeText={(text) => props.setNameUser(text)}
@@ -23,7 +23,7 @@ export default function InputMy(props) {
   } else if (props.isPassword == "no") {
     return (
       <TextInput
-        style={styles.inputStyle}
+        style={styles.inputStyleTxt}
         placeholder={props.title}
         value={props.nameUser}
         onChangeText={(text) => props.setNameUser(text)}
