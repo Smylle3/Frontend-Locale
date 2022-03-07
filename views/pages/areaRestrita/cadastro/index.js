@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import NavBar from "../../../components/navbar";
 import styles from "./styles";
+import NavBar from "../../../components/navbar";
 import config from "../../../../app.json";
 
 export default function Cadastro({ navigation }) {
@@ -19,7 +19,7 @@ export default function Cadastro({ navigation }) {
 
   async function randomCode() {
     let result = "";
-    let length = 20;
+    let length = 10;
     let chars =
       "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     for (let i = length; i > 0; --i)
