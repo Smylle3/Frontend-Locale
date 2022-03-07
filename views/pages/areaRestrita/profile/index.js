@@ -7,12 +7,18 @@ import {
   Modal,
   Alert,
   Pressable,
+  KeyboardAvoidingView,
+  SafeAreaView,
+  ScrollView,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+import PassView from "../../../components/passView/passView";
 import config from "../../../../app.json";
 import NavBar from "../../../components/navbar";
 import styles from "./styles";
+import Gstyles from "../../../../Globalstyles";
+import InputMy from "../../../components/input";
 
 export default function Profile({ navigation }) {
   const [user, setUser] = useState("");
@@ -24,6 +30,7 @@ export default function Profile({ navigation }) {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [msgPass, setMsgPass] = useState("");
+  const [showPass, setShowPass] = useState(true);
 
   useEffect(() => {
     async function getUserInfo() {
@@ -47,18 +54,19 @@ export default function Profile({ navigation }) {
       setMsgPass("Informe os dados!");
       setModalVisible(true);
     } else {
-      let response = await fetch(`${config.urlRoot}verify-pass`, {
+      let response = await fetch(`${config.urlRoot}api/users/update-user`, {
         method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({
           id: idUser,
           oldPassword: oldPassword,
           newPassword: newPassword,
           confirmPassword: confirmPassword,
+          flag: 0,
         }),
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
       });
       let jsonChangePass = await response.json();
 
@@ -75,11 +83,13 @@ export default function Profile({ navigation }) {
       setMsgPass("Informe um nome de usuário válido!");
       setNameUser("");
     } else {
-      let response = await fetch(`${config.urlRoot}new-user`, {
+      let response = await fetch(`${config.urlRoot}api/users/update-user`, {
         method: "POST",
         body: JSON.stringify({
+          id: idUser,
           atualUser: user,
           nameUser: nameUser,
+          flag: 1,
         }),
         headers: {
           Accept: "application/json",
@@ -98,7 +108,8 @@ export default function Profile({ navigation }) {
   }
 
   return (
-    <View style={[styles.container, styles.top]}>
+    <View style={Gstyles.scroollContainer}>
+      <NavBar title="Perfil" navigation={navigation} />
       <Modal
         animationType="fade"
         transparent={true}
@@ -108,71 +119,76 @@ export default function Profile({ navigation }) {
           setModalVisible(!modalVisible);
         }}
       >
-        <View style={styles.modalStyle}>
-          <Text style={styles.modalStyleTxt}>{msgPass}</Text>
+        <View style={Gstyles.modalStyle}>
+          <Text style={Gstyles.modalStyleTxt}>{msgPass}</Text>
           <Pressable
             onPress={() => {
               setModalVisible(!modalVisible);
             }}
-            style={styles.modalStyleBtn}
+            style={Gstyles.modalStyleBtn}
           >
-            <Text style={styles.textStyle}>Fechar</Text>
+            <Text style={Gstyles.modalStyleBtnTxt}>Fechar</Text>
           </Pressable>
         </View>
       </Modal>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "position"}
+        style={{ marginTop: 15 }}
+      >
+        <View style={styles.keyView}>
+          <View style={styles.profilePic}></View>
+          <Text style={styles.titleName}>{user}</Text>
 
-      <NavBar title="Perfil" navigation={navigation} />
-      <View style={styles.imgTitle}></View>
-      <Text style={styles.titleName}>{user}</Text>
-      {/*BOX PARA ALTERAR USER*/}
-      <View style={styles.changePassForm}>
-        <Text style={styles.initTxt}>Altere seu nome de usuário</Text>
-        <View style={styles.inputsView}>
-          <TextInput
-            style={styles.inputPass}
-            placeholder="Nome de usuário"
-            value={nameUser}
-            onChangeText={(text) => setNameUser(text)}
-          />
+          {/*BOX PARA ALTERAR USER*/}
+          <View style={styles.viewForm}>
+            <Text style={styles.initTxt}>Altere seu nome de usuário</Text>
+            <InputMy
+              nameUser={nameUser}
+              setNameUser={setNameUser}
+              title="Nome de usuário"
+              isPassword="no"
+              showPass={showPass}
+            />
+            <TouchableOpacity
+              style={Gstyles.buttomStyle}
+              onPress={() => changeUserName()}
+            >
+              <Text style={Gstyles.buttomStyleTxt}>Alterar user</Text>
+            </TouchableOpacity>
+          </View>
+          {/*BOX PARA ALTERAR SENHA*/}
+          <View style={styles.viewForm}>
+            <Text style={styles.initTxt}>Altere sua senha</Text>
+            <InputMy
+              nameUser={oldPassword}
+              setNameUser={setOldPassword}
+              title="Senha atual"
+              isPassword="yes"
+              showPass={showPass}
+            />
+            <InputMy
+              nameUser={newPassword}
+              setNameUser={setNewPassword}
+              title="Nova senha"
+              isPassword="yes"
+              showPass={showPass}
+            />
+            <InputMy
+              nameUser={confirmPassword}
+              setNameUser={setConfirmPassword}
+              title="Confirmar a nova senha"
+              isPassword="yes"
+              showPass={showPass}
+            />
+            <TouchableOpacity
+              style={Gstyles.buttomStyle}
+              onPress={() => changePassword()}
+            >
+              <Text style={Gstyles.buttomStyleTxt}>Alterar senha</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-        <TouchableOpacity
-          onPress={() => changeUserName()}
-          style={styles.buttomPass}
-        >
-          <Text style={styles.buttomPassTxt}>Alterar user</Text>
-        </TouchableOpacity>
-      </View>
-
-      {/*BOX PARA ALTERAR SENHA*/}
-      <View style={styles.changePassForm}>
-        <Text style={styles.initTxt}>Altere sua senha</Text>
-        <View style={styles.inputsView}>
-          <TextInput
-            style={styles.inputPass}
-            placeholder="Senha atual"
-            value={oldPassword}
-            onChangeText={(text) => setOldPassword(text)}
-          />
-          <TextInput
-            style={styles.inputPass}
-            placeholder="Nova senha"
-            value={newPassword}
-            onChangeText={(text) => setNewPassword(text)}
-          />
-          <TextInput
-            style={styles.inputPass}
-            placeholder="Confirmar a nova senha"
-            value={confirmPassword}
-            onChangeText={(text) => setConfirmPassword(text)}
-          />
-        </View>
-        <TouchableOpacity
-          onPress={() => changePassword()}
-          style={styles.buttomPass}
-        >
-          <Text style={styles.buttomPassTxt}>Alterar senha</Text>
-        </TouchableOpacity>
-      </View>
+      </KeyboardAvoidingView>
     </View>
   );
 }
