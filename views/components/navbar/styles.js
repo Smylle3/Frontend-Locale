@@ -2,6 +2,8 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   title: {
+    zIndex: 99,
+
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
