@@ -1,25 +1,24 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import * as LocalAuthentication from "expo-local-authentication";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
   KeyboardAvoidingView,
   TouchableOpacity,
   Image,
-  TextInput,
   Platform,
 } from "react-native";
 
-import PassView from "../../components/passView/passView";
 import config from "../../../app.json";
 import styles from "./styles";
+import ModalMy from "../../components/modal";
+import InputMy from "../../components/input";
 
 export default function LoginPage({ navigation }) {
-  const [alert, setAlert] = useState("none");
+  const [msgPass, setMsgPass] = useState("");
+  const [isModal, setIsModal] = useState(false);
   const [name, setName] = useState(null);
   const [password, setPassword] = useState(null);
-  const [showPass, setShowPass] = useState(true);
 
   async function sendForm() {
     let response = await fetch(`${config.urlRoot}api/users/get-user`, {
@@ -38,10 +37,8 @@ export default function LoginPage({ navigation }) {
     setName(null);
     setPassword(null);
     if (jsonReturn === "falied") {
-      setAlert("flex");
-      setTimeout(() => {
-        setAlert("none");
-      }, 5000);
+      setIsModal(true);
+      setMsgPass("Usuário ou senha inválido!");
       await AsyncStorage.clear();
     } else {
       let userData = await AsyncStorage.setItem(
@@ -57,40 +54,26 @@ export default function LoginPage({ navigation }) {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={styles.container}
     >
+      <ModalMy msgPass={msgPass} isModal={isModal} setIsModal={setIsModal} />
       <View style={styles.viewImage}>
         <Image
           style={styles.image}
           source={require("../../../assets/LogoMarca3.png")}
         />
       </View>
-
-      <View>
-        <Text style={styles.alertMsgTxt(alert)}>
-          Usuário ou senha inválido!
-        </Text>
-      </View>
-
       <View style={styles.inputView}>
-        <TextInput
-          placeholder="Usuário"
-          style={styles.input}
-          onChangeText={(text) => {
-            setName(text);
-          }}
-          value={name}
+        <InputMy
+          nameUser={name}
+          setNameUser={setName}
+          title="Usuário"
+          isPassword="no"
         />
-        <View style={styles.input}>
-          <TextInput
-            placeholder="Senha"
-            style={{ width: "85%" }}
-            secureTextEntry={showPass}
-            onChangeText={(text) => {
-              setPassword(text);
-            }}
-            value={password}
-          />
-          <PassView showPass={showPass} setShowPass={setShowPass} />
-        </View>
+        <InputMy
+          nameUser={password}
+          setNameUser={setPassword}
+          title="Senha"
+          isPassword="yes"
+        />
         <TouchableOpacity
           style={styles.button}
           onPress={() => {

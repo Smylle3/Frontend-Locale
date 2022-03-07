@@ -18,18 +18,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  alertMsgTxt: (text = "none") => ({
-    textAlign: "center",
-    textAlignVertical: "center",
-
-    marginTop: 10,
-    width: 170,
-    height: 35,
-
-    backgroundColor: "#fff0db",
-    color: "#801313",
-    display: text,
-  }),
   inputView: {
     justifyContent: "center",
     alignItems: "center",
@@ -45,26 +33,11 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     elevation: 5,
   },
-  input: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-
-    marginTop: 8,
-    marginBottom: 8,
-    paddingLeft: 10,
-    paddingRight: 10,
-    width: "90%",
-    height: 35,
-    borderWidth: 1,
-    borderRadius: 8,
-    borderColor: "#ffab40",
-  },
   button: {
     justifyContent: "center",
     alignItems: "center",
 
-    marginBottom: 8,
+    marginBottom: 1,
     marginTop: 8,
 
     paddingLeft: 10,
@@ -80,7 +53,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
 
     marginBottom: 8,
-    marginTop: 8,
+    marginTop: 1,
 
     paddingLeft: 10,
     width: "60%",
@@ -89,6 +62,11 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderColor: "#b2772c",
     backgroundColor: "#ffab40",
+  },
+  viewButtonS: {
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
   },
   buttonS: {
     justifyContent: "center",
@@ -107,11 +85,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     textAlignVertical: "center",
     color: "#ffab40",
-  },
-  viewButtonS: {
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "row",
   },
 });
 
