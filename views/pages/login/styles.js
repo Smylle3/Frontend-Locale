@@ -46,11 +46,14 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   input: {
-    justifyContent: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
 
     marginTop: 8,
     marginBottom: 8,
     paddingLeft: 10,
+    paddingRight: 10,
     width: "90%",
     height: 35,
     borderWidth: 1,

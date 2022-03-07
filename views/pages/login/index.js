@@ -11,68 +11,32 @@ import {
   Platform,
 } from "react-native";
 
-import config from "../../../app.json"
+import PassView from "../../components/passView/passView";
+import config from "../../../app.json";
 import styles from "./styles";
 
 export default function LoginPage({ navigation }) {
   const [alert, setAlert] = useState("none");
-  const [user, setUser] = useState(null);
+  const [name, setName] = useState(null);
   const [password, setPassword] = useState(null);
-  const [login, setLogin] = useState(false);
-
-  useEffect(() => {
-    verLogin();
-  }, []);
-
-  async function verLogin() {
-    let response = await AsyncStorage.getItem("userData");
-    let jsonLogin = await JSON.parse(response);
-    if (jsonLogin !== null) {
-      setUser(jsonLogin.name);
-      setPassword(jsonLogin.password);
-      setLogin(true);
-    }
-    else {
-    }
-  }
-  
-  useEffect(() => {
-    console.log(login);
-    if (login === true) {
-      biometricLogin();
-    }
-  }, [login]);
-
-  async function biometricLogin() {
-    let compatible = await LocalAuthentication.hasHardwareAsync();
-    if(compatible){
-      let biometricRecords = await LocalAuthentication.isEnrolledAsync();
-      if(!biometricRecords){
-        alert("Biometria não cadastrada!");
-      } else {
-        let resultBio = await LocalAuthentication.authenticateAsync();
-        if(resultBio.success){
-          sendForm();
-        }else {
-        }
-      }
-    }
-  }
+  const [showPass, setShowPass] = useState(true);
 
   async function sendForm() {
-    let response = await fetch(`${config.urlRoot}login`, {
+    let response = await fetch(`${config.urlRoot}api/users/get-user`, {
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        name: user,
+        name: name,
         password: password,
       }),
     });
     let jsonReturn = await response.json();
 
+    setName(null);
+    setPassword(null);
     if (jsonReturn === "falied") {
       setAlert("flex");
       setTimeout(() => {
@@ -111,18 +75,22 @@ export default function LoginPage({ navigation }) {
           placeholder="Usuário"
           style={styles.input}
           onChangeText={(text) => {
-            setUser(text);
+            setName(text);
           }}
+          value={name}
         />
-        <TextInput
-          placeholder="Senha"
-          secureTextEntry={true}
-          style={styles.input}
-          onChangeText={(text) => {
-            setPassword(text);
-          }}
-        />
-
+        <View style={styles.input}>
+          <TextInput
+            placeholder="Senha"
+            style={{ width: "85%" }}
+            secureTextEntry={showPass}
+            onChangeText={(text) => {
+              setPassword(text);
+            }}
+            value={password}
+          />
+          <PassView showPass={showPass} setShowPass={setShowPass} />
+        </View>
         <TouchableOpacity
           style={styles.button}
           onPress={() => {
