@@ -4,7 +4,6 @@ const Gstyles = StyleSheet.create({
   scroollContainer: {
     flex: 1,
     backgroundColor: "#fff0db",
-    
   },
   initTxt: {
     margin: 10,
@@ -49,6 +48,17 @@ const Gstyles = StyleSheet.create({
     textAlign: "center",
     textAlignVertical: "center",
     color: "#49a879",
+  },
+  QRcode: {
+    padding: 15,
+  },
+  codeTxt: {
+    margin: 5,
+    color: "#b2772c",
+    borderColor: "#ffab40",
+    borderWidth: 1,
+    borderRadius: 5,
+    padding: 5,
   },
 });
 
