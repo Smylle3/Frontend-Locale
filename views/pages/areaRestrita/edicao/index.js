@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { View, Text } from "react-native";
+import { View, Text, KeyboardAvoidingView } from "react-native";
+
+import Gstyles from "../../../../Globalstyles";
 import styles from "./styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import NavBar from "../../../components/navbar";
+import ModalMy from "../../../components/modal";
 
 export default function Edicao({ navigation }) {
   const [objCode, setObjCode] = useState("QK249414737BR");
@@ -25,10 +28,10 @@ export default function Edicao({ navigation }) {
       );
       let jsonReturn = await response.json();
       let objeto = jsonReturn.objetos;
-      console.log(objeto);
+      //console.log(objeto);
       let response2 = await AsyncStorage.getItem("userData");
       let jsonUser = JSON.parse(response2);
-      console.log(jsonUser.createdAt);
+      //console.log(jsonUser.createdAt);
       /*if (jsonReturn === "falied") {
         setAlert("flex");
         setTimeout(() => {
@@ -47,9 +50,18 @@ export default function Edicao({ navigation }) {
   }, []);
 
   return (
-    <View style={[styles.container, styles.top]}>
+    <View style={Gstyles.scroollContainer}>
       <NavBar title="Editar encomenda" navigation={navigation} />
-      <Text>Edicao Page</Text>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "position"}
+        style={{ marginTop: 15 }}
+      >
+        <View style={Gstyles.keyView}>
+          <View style={Gstyles.viewForm}>
+            
+          </View>
+        </View>
+      </KeyboardAvoidingView>
     </View>
   );
 }
