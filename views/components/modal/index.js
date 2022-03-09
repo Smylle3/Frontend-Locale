@@ -11,7 +11,8 @@ export default function ModalMy(props) {
     function changeColor() {
       if (
         props.msgPass == "User name alterado com sucesso!" ||
-        props.msgPass == "Senha alterada com sucesso!"
+        props.msgPass == "Senha alterada com sucesso!" ||
+        props.msgPass == "Encomenda cadastrada com sucesso!"
       ) {
         setColorBack("#69f0ae");
         setColorFont("#49a879");
