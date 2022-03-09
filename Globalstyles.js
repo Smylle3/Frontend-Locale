@@ -37,7 +37,7 @@ const Gstyles = StyleSheet.create({
     marginTop: 8,
 
     paddingLeft: 10,
-    width: "40%",
+    paddingRight: 10,
     height: 35,
     borderWidth: 1,
     borderRadius: 8,
@@ -49,9 +49,48 @@ const Gstyles = StyleSheet.create({
     textAlignVertical: "center",
     color: "#49a879",
   },
-  QRcode: {
-    padding: 15,
+  buttomStyleRed: {
+    justifyContent: "center",
+    alignItems: "center",
+
+    marginBottom: 8,
+    marginTop: 8,
+
+    paddingLeft: 10,
+    paddingRight: 10,
+    height: 35,
+    borderWidth: 1,
+    borderRadius: 8,
+    borderColor: "#971243",
+    backgroundColor: "#df487f",
   },
+  buttomStyleTxtRed: {
+    textAlign: "center",
+    textAlignVertical: "center",
+    color: "#971243",
+  },
+  shareButtomStyle: {
+    alignItems: "center",
+    flexDirection: "row",
+
+    marginBottom: 8,
+    marginTop: 8,
+
+    padding: 8,
+    borderWidth: 1,
+    borderRadius: 25,
+    borderColor: "#1769aa",
+    backgroundColor: "#4dabf5",
+  },
+  shareButtomStyleTxt: {
+    textAlign: "center",
+    textAlignVertical: "center",
+    color: "#1769aa",
+  },
+  QRcode: (isCode) => ({
+    padding: 0,
+    display: isCode,
+  }),
   codeTxt: {
     margin: 5,
     color: "#b2772c",
