@@ -4,39 +4,34 @@ import {
   Text,
   TouchableOpacity,
   KeyboardAvoidingView,
+  Image,
 } from "react-native";
-import QRCode from "react-native-qrcode-svg";
+import * as FileSystem from "expo-file-system";
+import * as Sharing from "expo-sharing";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Icon from "react-native-vector-icons/Ionicons";
 
 import Gstyles from "../../../../Globalstyles";
 import NavBar from "../../../components/navbar";
 import config from "../../../../app.json";
 import ModalMy from "../../../components/modal";
 import InputMy from "../../../components/input";
-import Logo from "../../../../assets/icon/CompassOrange.png";
+import QRCodeMy from "../../../components/qrCode";
 
 export default function Cadastro({ navigation }) {
   const [msgPass, setMsgPass] = useState("");
   const [isModal, setIsModal] = useState(false);
 
-  const [code, setCode] = useState(null);
+  const [code, setCode] = useState("Cadastre uma encomenda!");
   const [user, setUser] = useState(null);
   const [product, setProduct] = useState(null);
   const [local, setLocal] = useState(config.origin);
+  const [qrCode, setQrCode] = useState(null);
+  let result = "Cadastre uma encomenda!";
+  let length = 20;
+  let chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-  useEffect(() => {
-    randomCode();
-  }, []);
-
-  async function randomCode() {
-    let result = "";
-    let length = 20;
-    let chars =
-      "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    for (let i = length; i > 0; --i)
-      result += chars[Math.floor(Math.random() * chars.length)];
-    setCode(result);
-  }
+  function randomCode() {}
 
   useEffect(() => {
     async function getUserInfo() {
@@ -48,6 +43,12 @@ export default function Cadastro({ navigation }) {
   }, []);
 
   async function sendForm() {
+    result = "";
+    for (let i = length; i > 0; --i) {
+      result += chars[Math.floor(Math.random() * chars.length)];
+    }
+    console.log(result);
+
     let response = await fetch(`${config.urlRoot}api/tracks/new-track`, {
       method: "POST",
       headers: {
@@ -56,12 +57,12 @@ export default function Cadastro({ navigation }) {
       },
       body: JSON.stringify({
         UserId: user,
-        code: code,
-        product: product,
+        code: result,
         local: local,
       }),
     });
     let resTackId = await response.json();
+
     let resProduct = await fetch(`${config.urlRoot}api/products/new-product`, {
       method: "POST",
       headers: {
@@ -74,6 +75,21 @@ export default function Cadastro({ navigation }) {
       }),
     });
     let jsonProduct = await resProduct.json();
+
+    let resQRCode = await fetch(`${config.urlRoot}api/tracks/new-QRCode`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        code: result,
+      }),
+    });
+    let jsonQRCode = await resQRCode.json();
+    setCode(result);
+    setQrCode(jsonQRCode);
+
     if (jsonProduct == "Sucesso") {
       setMsgPass("Encomenda cadastrada com sucesso!");
       setIsModal(true);
@@ -82,6 +98,8 @@ export default function Cadastro({ navigation }) {
       setIsModal(true);
     }
   }
+
+  async function shareQR() {}
 
   return (
     <View style={Gstyles.scroollContainer}>
@@ -101,24 +119,35 @@ export default function Cadastro({ navigation }) {
               isPassword="no"
             />
             <TouchableOpacity
-              onPress={() => sendForm()}
+              onPress={() => {
+                sendForm();
+              }}
               style={Gstyles.buttomStyle}
             >
               <Text style={Gstyles.buttomStyleTxt}>Cadastrar encomenda</Text>
             </TouchableOpacity>
           </View>
           <View style={Gstyles.viewForm}>
-              <Text style={Gstyles.initTxt}>QRCode do código da encomenda</Text>
-              <Text style={Gstyles.codeTxt}>{code}</Text>
-            <View style={Gstyles.QRcode}>
-              <QRCode
-                value={code ? code : "N/A"}
-                size={250}
-                color="#b2772c"
-                logo={Logo}
-                logoBackgroundColor="#fff"
-              />
-            </View>
+            <Text style={Gstyles.initTxt}>QRCode do código da encomenda</Text>
+            <Text style={Gstyles.codeTxt}>{code}</Text>
+            <QRCodeMy qrCode={qrCode} code={code} />
+            <TouchableOpacity
+              onPress={() => {}}
+              style={Gstyles.shareButtomStyle}
+            >
+              <Icon name="share-social-outline" color="#1769aa" size={20} />
+              <Text style={Gstyles.shareButtomStyleTxt}>Share</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setProduct(null);
+                setCode("Receba o código aqui!");
+                setQrCode(null);
+              }}
+              style={Gstyles.buttomStyleRed}
+            >
+              <Text style={Gstyles.buttomStyleTxtRed}>Limpar dados</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </KeyboardAvoidingView>
