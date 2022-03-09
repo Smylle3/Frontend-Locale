@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
 } from "react-native";
+import QRCode from "react-native-qrcode-svg";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import Gstyles from "../../../../Globalstyles";
@@ -12,12 +13,13 @@ import NavBar from "../../../components/navbar";
 import config from "../../../../app.json";
 import ModalMy from "../../../components/modal";
 import InputMy from "../../../components/input";
+import Logo from "../../../../assets/icon/CompassOrange.png";
 
 export default function Cadastro({ navigation }) {
   const [msgPass, setMsgPass] = useState("");
   const [isModal, setIsModal] = useState(false);
 
-  const [code, setCode] = useState("");
+  const [code, setCode] = useState(null);
   const [user, setUser] = useState(null);
   const [product, setProduct] = useState(null);
   const [local, setLocal] = useState(config.origin);
@@ -104,6 +106,19 @@ export default function Cadastro({ navigation }) {
             >
               <Text style={Gstyles.buttomStyleTxt}>Cadastrar encomenda</Text>
             </TouchableOpacity>
+          </View>
+          <View style={Gstyles.viewForm}>
+              <Text style={Gstyles.initTxt}>QRCode do código da encomenda</Text>
+              <Text style={Gstyles.codeTxt}>{code}</Text>
+            <View style={Gstyles.QRcode}>
+              <QRCode
+                value={code ? code : "N/A"}
+                size={250}
+                color="#b2772c"
+                logo={Logo}
+                logoBackgroundColor="#fff"
+              />
+            </View>
           </View>
         </View>
       </KeyboardAvoidingView>
