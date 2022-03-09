@@ -29,6 +29,6 @@
       "favicon": "./assets/favicon.png"
     }
   },
-  "urlRoot": "http://192.168.100.5:3000/",
+  "urlRoot": "http://192.168.100.5:4000/",
   "origin": "Quadra 17, 06, Jardim Br II - Águas Lindas / GO"
 }
